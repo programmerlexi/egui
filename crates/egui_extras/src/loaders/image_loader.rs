@@ -1,9 +1,10 @@
 use ahash::HashMap;
 use core::{mem::size_of, task::Poll};
 use egui::{
-    ColorImage, decode_animated_image_uri,
+    decode_animated_image_uri,
     load::{Bytes, BytesPoll, ImageLoadResult, ImageLoader, ImagePoll, LoadError, SizeHint},
     mutex::Mutex,
+    ColorImage,
 };
 use image::ImageFormat;
 use std::{path::Path, sync::Arc};
@@ -123,14 +124,6 @@ impl ImageLoader for ImageCrateLoader {
         } else {
             match ctx.try_load_bytes(uri) {
                 Ok(BytesPoll::Ready { bytes, mime, .. }) => {
-                    // (2)
-                    if let Some(mime) = mime
-                        && !is_supported_mime(&mime)
-                    {
-                        return Err(LoadError::FormatNotSupported {
-                            detected_format: Some(mime),
-                        });
-                    }
                     load_image(ctx, uri, &self.cache, &bytes)
                 }
                 Ok(BytesPoll::Pending { size }) => Ok(ImagePoll::Pending { size }),
