@@ -17,11 +17,17 @@ pub fn load_image_bytes(image_bytes: &[u8]) -> Result<egui::ColorImage, egui::lo
 
         use image::{DynamicImage, ImageDecoder, ImageReader};
 
+        println!("cursor");
         let reader = Cursor::new(image_bytes);
+        println!("reader");
         let reader = ImageReader::new(reader).with_guessed_format()?;
+        println!("decoder");
         let mut decoder = reader.into_decoder()?;
+        println!("orientation");
         let orientation = ImageDecoder::orientation(&mut decoder)?;
+        println!("image");
         let mut image = DynamicImage::from_decoder(decoder)?;
+        println!("image rotate");
         image.apply_orientation(orientation);
         Ok(image)
     }
