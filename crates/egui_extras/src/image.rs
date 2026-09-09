@@ -19,11 +19,11 @@ pub fn load_image_bytes(image_bytes: &[u8]) -> Result<egui::ColorImage, egui::lo
 
         let reader = Cursor::new(image_bytes);
         let reader = ImageReader::new(reader).with_guessed_format()?;
-        let mut decoder = reader.into_decoder()?;
-        let orientation = ImageDecoder::orientation(&mut decoder)?;
-        let mut image = DynamicImage::from_decoder(decoder)?;
-        image.apply_orientation(orientation);
-        Ok(image)
+        // let mut decoder = reader.into_decoder()?;
+        // let orientation = ImageDecoder::orientation(&mut decoder)?;
+        // let mut image = DynamicImage::from_decoder(decoder)?;
+        // image.apply_orientation(orientation);
+        Ok(reader.decode()?)
     }
 
     profiling::function_scope!();
